@@ -1,4 +1,4 @@
-# A minimal Ubuntu (16.04 - Xenial) base image modified for Docker-friendliness
+# A minimal Ubuntu (18.04 - Bionic) base image modified for Docker-friendliness
 
 _Baseimage-docker only consumes 8.3 MB RAM and is much more powerful than Busybox or Alpine. See why below._
 
@@ -10,8 +10,8 @@ Baseimage-docker is a special [Docker](https://www.docker.com) image that is con
 
 You can use it as a base for your own Docker images.
 
-This version, 'phusion-base-xenial', is available for pulling from
-[the Docker registry](https://hub.docker.com/r/robinbb/phusion-base-xenial).
+This version, 'phusion-base-bionic', is available for pulling from
+[the Docker registry](https://hub.docker.com/r/robinbb/phusion-base-bionic).
 
 ### What are the problems with the stock Ubuntu base image?
 
@@ -118,7 +118,7 @@ It follows that Baseimage-docker also does not deny the Docker philosophy. In fa
 
 To look around in the image, run:
 
-    docker run --rm -t -i robinbb/phusion-base-xenial:<VERSION> /sbin/my_init -- bash -l
+    docker run --rm -t -i robinbb/phusion-base-bionic:<VERSION> /sbin/my_init -- bash -l
 
 where `<VERSION>` is [one of the baseimage-docker version numbers](https://github.com/phusion/baseimage-docker/blob/master/Changelog.md).
 
@@ -130,13 +130,13 @@ You don't have to download anything manually. The above command will automatical
 <a name="getting_started"></a>
 ### Getting started
 
-The image is called `robinbb/phusion-base-xenial`, and is available on the Docker registry.
+The image is called `robinbb/phusion-base-bionic`, and is available on the Docker registry.
 
     # Use this as a base image. To make your builds reproducible, make
     # sure you lock down to a specific version, not to `latest`!
     # See https://github.com/phusion/baseimage-docker/blob/master/Changelog.md for
     # a list of version numbers.
-    FROM robinbb/phusion-base-xenial:<VERSION>
+    FROM robinbb/phusion-base-bionic:<VERSION>
 
     # Use baseimage-docker's init system.
     CMD ["/sbin/my_init"]
@@ -288,7 +288,7 @@ Here is an example shell session showing you how the dumps look like:
 
     $ docker run -t -i \
       --env FOO=bar --env HELLO='my beautiful world' \
-      robinbb/phusion-base-xenial:<VERSION> /sbin/my_init -- \
+      robinbb/phusion-base-bionic:<VERSION> /sbin/my_init -- \
       bash -l
     ...
     *** Running bash -l...
@@ -370,7 +370,7 @@ This will perform the following:
 
 For example:
 
-    $ docker run robinbb/phusion-base-xenial:<VERSION> /sbin/my_init -- ls
+    $ docker run robinbb/phusion-base-bionic:<VERSION> /sbin/my_init -- ls
     *** Running /etc/rc.local...
     *** Booting runit daemon...
     *** Runit started as PID 80
@@ -384,7 +384,7 @@ You may find that the default invocation is too noisy. Or perhaps you don't want
 
 The following example runs `ls` without running the startup files and with less messages, while running all runit services:
 
-    $ docker run robinbb/phusion-base-xenial:<VERSION> /sbin/my_init --skip-startup-files --quiet -- ls
+    $ docker run robinbb/phusion-base-bionic:<VERSION> /sbin/my_init --skip-startup-files --quiet -- ls
     bin  boot  dev  etc  home  image  lib  lib64  media  mnt  opt  proc  root  run  sbin  selinux  srv  sys  tmp  usr  var
 
 <a name="run_inside_existing_container"></a>
