@@ -1,4 +1,4 @@
-NAME = phusion/baseimage
+NAME = robinbb/phusion-base-xenial
 VERSION = 0.10.2
 
 .PHONY: all build test tag_latest release ssh
@@ -16,6 +16,7 @@ tag_latest:
 
 release: test tag_latest
 	@if ! docker images $(NAME) | awk '{ print $$2 }' | grep -q -F $(VERSION); then echo "$(NAME) version $(VERSION) is not yet built. Please run 'make build'"; false; fi
+	printf "%s" "$(DOCKER_PASSWORD)" | docker login -u "$(DOCKER_USERNAME)" --password-stdin || exit 1
 	docker push $(NAME)
 	@echo "*** Don't forget to create a tag by creating an official GitHub release."
 

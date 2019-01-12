@@ -1,5 +1,7 @@
-FROM ubuntu:16.04
-MAINTAINER Phusion <info@phusion.nl>
+# Use a specific image for 'ubuntu:16.04':
+FROM ubuntu:xenial-20181218
+
+MAINTAINER Robin Bate Boerop <me@robinbb.com>
 
 COPY . /bd_build
 
