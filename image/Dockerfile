@@ -1,5 +1,7 @@
-FROM ubuntu:18.04
-MAINTAINER Phusion <info@phusion.nl>
+# Use a specific image for 'ubuntu:18.04':
+FROM ubuntu:bionic-20181204
+
+MAINTAINER Robin Bate Boerop <me@robinbb.com>
 
 COPY . /bd_build
 

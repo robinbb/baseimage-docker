@@ -1,7 +1,4 @@
-# A minimal Ubuntu base image modified for Docker-friendliness
-
-[![](https://badge.imagelayers.io/phusion/baseimage:latest.svg)](https://imagelayers.io/?images=phusion/baseimage:latest 'Get your own badge on imagelayers.io')
-[![Travis](https://img.shields.io/travis/phusion/baseimage-docker.svg)](https://travis-ci.org/phusion/baseimage-docker)
+# A minimal Ubuntu (16.04 - Xenial) base image modified for Docker-friendliness
 
 _Baseimage-docker only consumes 8.3 MB RAM and is much more powerful than Busybox or Alpine. See why below._
 
@@ -13,7 +10,8 @@ Baseimage-docker is a special [Docker](https://www.docker.com) image that is con
 
 You can use it as a base for your own Docker images.
 
-Baseimage-docker is available for pulling from [the Docker registry](https://registry.hub.docker.com/u/phusion/baseimage/)!
+This version, 'phusion-base-xenial', is available for pulling from
+[the Docker registry](https://hub.docker.com/r/robinbb/phusion-base-xenial).
 
 ### What are the problems with the stock Ubuntu base image?
 
@@ -34,12 +32,8 @@ You can configure the stock `ubuntu` image yourself from your Dockerfile, so why
 -----------------------------------------
 
 **Related resources**:
-  [Website](http://phusion.github.io/baseimage-docker/) |
-  [Github](https://github.com/phusion/baseimage-docker) |
-  [Docker registry](https://index.docker.io/u/phusion/baseimage/) |
-  [Discussion forum](https://groups.google.com/d/forum/passenger-docker) |
-  [Twitter](https://twitter.com/phusion_nl) |
-  [Blog](http://blog.phusion.nl/)
+  [Phusion Website](http://phusion.github.io/baseimage-docker/) |
+  [GitHub repo](https://github.com/robinbb/baseimage-docker)
 
 **Table of contents**
 
@@ -70,7 +64,6 @@ You can configure the stock `ubuntu` image yourself from your Dockerfile, so why
      * [Using the insecure key for one container only](#using_the_insecure_key_for_one_container_only)
      * [Enabling the insecure key permanently](#enabling_the_insecure_key_permanently)
      * [Using your own key](#using_your_own_key)
-     * [The `docker-ssh` tool](#docker_ssh)
  * [Building the image yourself](#building)
   * [Removing optional services](#removing_optional_services)
  * [Conclusion](#conclusion)
@@ -125,7 +118,7 @@ It follows that Baseimage-docker also does not deny the Docker philosophy. In fa
 
 To look around in the image, run:
 
-    docker run --rm -t -i phusion/baseimage:<VERSION> /sbin/my_init -- bash -l
+    docker run --rm -t -i robinbb/phusion-base-xenial:<VERSION> /sbin/my_init -- bash -l
 
 where `<VERSION>` is [one of the baseimage-docker version numbers](https://github.com/phusion/baseimage-docker/blob/master/Changelog.md).
 
@@ -137,13 +130,13 @@ You don't have to download anything manually. The above command will automatical
 <a name="getting_started"></a>
 ### Getting started
 
-The image is called `phusion/baseimage`, and is available on the Docker registry.
+The image is called `robinbb/phusion-base-xenial`, and is available on the Docker registry.
 
-    # Use phusion/baseimage as base image. To make your builds reproducible, make
+    # Use this as a base image. To make your builds reproducible, make
     # sure you lock down to a specific version, not to `latest`!
     # See https://github.com/phusion/baseimage-docker/blob/master/Changelog.md for
     # a list of version numbers.
-    FROM phusion/baseimage:<VERSION>
+    FROM robinbb/phusion-base-xenial:<VERSION>
 
     # Use baseimage-docker's init system.
     CMD ["/sbin/my_init"]
@@ -295,7 +288,7 @@ Here is an example shell session showing you how the dumps look like:
 
     $ docker run -t -i \
       --env FOO=bar --env HELLO='my beautiful world' \
-      phusion/baseimage:<VERSION> /sbin/my_init -- \
+      robinbb/phusion-base-xenial:<VERSION> /sbin/my_init -- \
       bash -l
     ...
     *** Running bash -l...
@@ -377,7 +370,7 @@ This will perform the following:
 
 For example:
 
-    $ docker run phusion/baseimage:<VERSION> /sbin/my_init -- ls
+    $ docker run robinbb/phusion-base-xenial:<VERSION> /sbin/my_init -- ls
     *** Running /etc/rc.local...
     *** Booting runit daemon...
     *** Runit started as PID 80
@@ -391,7 +384,7 @@ You may find that the default invocation is too noisy. Or perhaps you don't want
 
 The following example runs `ls` without running the startup files and with less messages, while running all runit services:
 
-    $ docker run phusion/baseimage:<VERSION> /sbin/my_init --skip-startup-files --quiet -- ls
+    $ docker run robinbb/phusion-base-xenial:<VERSION> /sbin/my_init --skip-startup-files --quiet -- ls
     bin  boot  dev  etc  home  image  lib  lib64  media  mnt  opt  proc  root  run  sbin  selinux  srv  sys  tmp  usr  var
 
 <a name="run_inside_existing_container"></a>
@@ -551,28 +544,6 @@ Now that you have the IP address, you can use SSH to login to the container, or 
     # Running a command inside the container
     ssh -i /path-to/your_key root@<IP address> echo hello world
 
-<a name="docker_ssh"></a>
-#### The `docker-ssh` tool
-
-Looking up the IP of a container and running an SSH command quickly becomes tedious. Luckily, we provide the `docker-ssh` tool which automates this process. This tool is to be run on the *Docker host*, not inside a Docker container.
-
-First, install the tool on the Docker host:
-
-    curl --fail -L -O https://github.com/phusion/baseimage-docker/archive/master.tar.gz && \
-    tar xzf master.tar.gz && \
-    sudo ./baseimage-docker-master/install-tools.sh
-
-Then run the tool as follows to login to a container using SSH:
-
-    docker-ssh YOUR-CONTAINER-ID
-
-You can lookup `YOUR-CONTAINER-ID` by running `docker ps`.
-
-By default, `docker-ssh` will open a Bash session. You can also tell it to run a command, and then exit:
-
-    docker-ssh YOUR-CONTAINER-ID echo hello world
-
-
 <a name="building"></a>
 ## Building the image yourself
 
@@ -580,14 +551,8 @@ If for whatever reason you want to build the image yourself instead of downloadi
 
 Clone this repository:
 
-    git clone https://github.com/phusion/baseimage-docker.git
+    git clone https://github.com/robinbb/baseimage-docker.git
     cd baseimage-docker
-
-Start a virtual machine with Docker in it. You can use the Vagrantfile that we've already provided.
-
-    vagrant up
-    vagrant ssh
-    cd /vagrant
 
 Build the image:
 
@@ -621,8 +586,8 @@ Then you can proceed with `make build` command.
 <a name="conclusion"></a>
 ## Conclusion
 
- * Using baseimage-docker? [Tweet about us](https://twitter.com/share) or [follow us on Twitter](https://twitter.com/phusion_nl).
- * Having problems? Want to participate in development? Please post a message at [the discussion forum](https://groups.google.com/d/forum/passenger-docker).
+ * Using this image? [Tweet about it](https://twitter.com/share) or
+   [follow Phusion on Twitter](https://twitter.com/phusion_nl).
  * Looking for a more complete base image, one that is ideal for Ruby, Python, Node.js and Meteor web apps? Take a look at [passenger-docker](https://github.com/phusion/passenger-docker).
  * Need a helping hand? Phusion also offers [consulting](https://www.phusion.nl/consultancy) on a wide range of topics, including Web Development, UI/UX Research & Design, Technology Migration and Auditing. 
 
