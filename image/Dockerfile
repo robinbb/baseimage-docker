@@ -12,10 +12,10 @@ RUN [ "$DISABLE_SYSLOG" -eq 1 ] && rm -fr /bd_build/services/syslog-ng || true
 RUN [ "$DISABLE_SSH" -eq 1 ] && rm -fr /bd_build/services/ssh || true
 RUN [ "$DISABLE_CRON" -eq 1 ] && rm -fr /bd_build/services/cron || true
 
-RUN /bd_build/prepare.sh
-RUN /bd_build/system_services.sh
-RUN /bd_build/utilities.sh
-RUN /bd_build/cleanup.sh
+RUN /bd_build/prepare.sh \
+    && /bd_build/system_services.sh \
+    && /bd_build/utilities.sh \
+    && /bd_build/cleanup.sh
 
 ENV DEBIAN_FRONTEND="teletype" \
     LANG="en_US.UTF-8" \
