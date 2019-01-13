@@ -4,3 +4,15 @@ services:
 script:
 - make build
 - make test
+after_success:
+- |
+  case "${TRAVIS_BRANCH}" in
+    master) make release VERSION=latest ;;
+    bionic) make release ;;
+    xenial) make release ;;
+    *)      :            ;;
+  esac
+env:
+  global:
+  - secure: VgqP+ZvTB4mtl8fgXMqYuVO1dgkachEbM5+DcoJyz0ha84XbXcI8AzzmFJU31+L8/qAocQvnJWXPKaMm/bVfV/8ga+5V2xxxDl2tXPAkp9tS6B8xYvRLuk+JDwnUqwy9ncRzwk51eU0vAaWaKr8Rw+A1x0IH1GkQGrOkbUas61+JceMBy9hro0gd5UCN7f8HP4QLBdnxnDEoMtz+VHmA0w1M0qasceFUh+OOaBFSSFa1YYPEcYRvXMdrVEsDwkGtp+2DN41CZvWy/ywSs5E+K+4QOcjURCMPpxEj9VqZEFvHhajkSAOWC5USShLBlLVnTqhcCWVmjp3G3ZchQpI/DNPb+vAOiJq/+ZoKKCpDPFSyLUj9FTSn/WBkdNP3p7vaOCK9AQyUQcg/5wTy/gUwRG2uEyjUlX3x8UHX5TC2aw2GJ3qPyX6xUb9WusWbp23m1Rv9y6k432EsrIv/twb8LTtLR1sJRx8pFunrka+GMpi9/ltzmOABcXdBjWyBO3g4tLloRwn1mlyMNdjzrK69WKUeLybpxCVr4qcsN9mlg1N8dZf9GNwSXOziSDV//Cx8HnDyQgoN0dt0wVmMWQXJouLzN4z9TtAeZmMD5G/uB4xxTV83g9x142gHuAxH2kzBQuf8krOAowejmLF1i7GtavO+behprNNxng/hXTc0Gv8=
+  - secure: di92ybDAdAjK+hC4L6lgh8sHYw3d2jSFA+ArvZymttqDjUZsGEvmrKiEJ+iS22h56a8JU/OYZad7efUGbzMPPBLIRnTUKsBdV0w2TkPhEnRmHxDbAghynyqCMSMivg41qvcFEXPAyOa76v829fcZz6pE2yI9Wr6Khg0RmC/KoAeeHSYhfiQjVQnTfu4HYaUOVwNkm6F1a/RhoUPixnTakHvAC7onHb9/c86Kr8K3Hp1nK3WQMuoJ1ty9YnVHEc9a7Oo9K8KiueDfkuIbnvOmq+qbwepGPGujlngAKGmeocp0NoDAlTw+wj9tkrh/oKseZ9UPWza265bgtarnKqNUyyAGmvZTqBmup+S6c7vY7kceKTX3RbRcwL4Rwm5t6maOYLjV4fuaENWbjOhVmNB8ijdMg3fBy36+rIToCfC8PcJZ3B4znkFTNHCpEBeCeK11weAxU/pGo8VSE3pUH/qlPUJb630/4WnCSd5QbARH+5swJ+IFhv9WMCtfrxYeDqv3meZK9GNAbxlIG1kwI7CG004tcGjBFDeu9UkZL30yLuCyNHRrhkJFuuarulrGO+RgcqQL7yg5AJf7eGg1K7D3jJcucR32vjFA5Mau/4eH1aSOoaihhuZx9Vk3ylrlPaPsu2SMOHsU8kzXBetm4Gw+u6s1PKd2BL+th/7xEBCgftA=
