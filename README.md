@@ -61,8 +61,6 @@ You can configure the stock `ubuntu` image yourself from your Dockerfile, so why
    * [Login to the container via SSH](#login_ssh)
      * [Enabling SSH](#enabling_ssh)
      * [About SSH keys](#ssh_keys)
-     * [Using the insecure key for one container only](#using_the_insecure_key_for_one_container_only)
-     * [Enabling the insecure key permanently](#enabling_the_insecure_key_permanently)
      * [Using your own key](#using_your_own_key)
  * [Building the image yourself](#building)
   * [Removing optional services](#removing_optional_services)
@@ -418,7 +416,7 @@ Here's how it compares to [using `docker exec` to login to the container or to r
    * Does not require root privileges on the Docker host.
    * Allows you to let users login to the container, without letting them login to the Docker host. However, this is not enabled by default because baseimage-docker does not expose the SSH server to the public Internet by default.
  * Cons
-   * Requires setting up SSH keys. However, baseimage-docker makes this easy for many cases through a pregenerated, insecure key. Read on to learn more.
+   * Requires setting up SSH keys.
 
 <a name="enabling_ssh"></a>
 #### Enabling SSH
@@ -443,52 +441,13 @@ Then, you can start your container with
 
     docker run -d -v `pwd`/myfolder:/etc/my_init.d my/dockerimage
 
-This will initialize sshd on container boot.  You can then access it with the insecure key as below, or using the methods to add a secure key.  Further, you can publish the port to your machine with -p 2222:22 allowing you to ssh to 127.0.0.1:2222 instead of looking up the ip address of the container.
+This will initialize sshd on container boot.  You can then use the methods to add a secure key.  Further, you can publish the port to your machine with -p 2222:22 allowing you to ssh to 127.0.0.1:2222 instead of looking up the ip address of the container.
 
 <a name="ssh_keys"></a>
 #### About SSH keys
 
-First, you must ensure that you have the right SSH keys installed inside the container. By default, no keys are installed, so nobody can login. For convenience reasons, we provide [a pregenerated, insecure key](https://github.com/phusion/baseimage-docker/blob/master/image/services/sshd/keys/insecure_key) [(PuTTY format)](https://github.com/phusion/baseimage-docker/blob/master/image/services/sshd/keys/insecure_key.ppk) that you can easily enable. However, please be aware that using this key is for convenience only. It does not provide any security because this key (both the public and the private side) is publicly available. **In production environments, you should use your own keys**.
-
-<a name="using_the_insecure_key_for_one_container_only"></a>
-#### Using the insecure key for one container only
-
-You can temporarily enable the insecure key for one container only. This means that the insecure key is installed at container boot. If you `docker stop` and `docker start` the container, the insecure key will still be there, but if you use `docker run` to start a new container then that container will not contain the insecure key.
-
-Start a container with `--enable-insecure-key`:
-
-    docker run YOUR_IMAGE /sbin/my_init --enable-insecure-key
-
-Find out the ID of the container that you just ran:
-
-    docker ps
-
-Once you have the ID, look for its IP address with:
-
-    docker inspect -f "{{ .NetworkSettings.IPAddress }}" <ID>
-
-Now that you have the IP address, you can use SSH to login to the container, or to execute a command inside it:
-
-    # Download the insecure private key
-    curl -o insecure_key -fSL https://github.com/phusion/baseimage-docker/raw/master/image/services/sshd/keys/insecure_key
-    chmod 600 insecure_key
-
-    # Login to the container
-    ssh -i insecure_key root@<IP address>
-
-    # Running a command inside the container
-    ssh -i insecure_key root@<IP address> echo hello world
-
-<a name="enabling_the_insecure_key_permanently"></a>
-#### Enabling the insecure key permanently
-
-It is also possible to enable the insecure key in the image permanently. This is not generally recommended, but is suitable for e.g. temporary development or demo environments where security does not matter.
-
-Edit your Dockerfile to install the insecure key permanently:
-
-    RUN /usr/sbin/enable_insecure_key
-
-Instructions for logging into the container is the same as in section [Using the insecure key for one container only](#using_the_insecure_key_for_one_container_only).
+First, you must ensure that you have the right SSH keys installed inside the
+container. By default, no keys are installed, so nobody can login.
 
 <a name="using_your_own_key"></a>
 #### Using your own key

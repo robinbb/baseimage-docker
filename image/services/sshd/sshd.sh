@@ -18,8 +18,3 @@ cp $SSHD_BUILD_PATH/00_regen_ssh_host_keys.sh /etc/my_init.d/
 mkdir -p /root/.ssh
 chmod 700 /root/.ssh
 chown root:root /root/.ssh
-cp $SSHD_BUILD_PATH/keys/insecure_key.pub /etc/insecure_key.pub
-cp $SSHD_BUILD_PATH/keys/insecure_key /etc/insecure_key
-chmod 644 /etc/insecure_key*
-chown root:root /etc/insecure_key*
-cp $SSHD_BUILD_PATH/enable_insecure_key /usr/sbin/
