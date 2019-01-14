@@ -1,6 +1,4 @@
-# A minimal Ubuntu (18.04 - Bionic) base image modified for Docker-friendliness
-
-_Baseimage-docker only consumes 8.3 MB RAM and is much more powerful than Busybox or Alpine. See why below._
+# A small Ubuntu (18.04 - Bionic) base image forked from Phusion's
 
 Baseimage-docker is a special [Docker](https://www.docker.com) image that is configured for correct use within Docker containers. It is Ubuntu, plus:
 
@@ -10,8 +8,19 @@ Baseimage-docker is a special [Docker](https://www.docker.com) image that is con
 
 You can use it as a base for your own Docker images.
 
-This version, 'phusion-base-bionic', is available for pulling from
+This 'phusion-base-bionic' image is available for pulling from
 [the Docker registry](https://hub.docker.com/r/robinbb/phusion-base-bionic).
+It differs from Phusion's version in the following ways:
+
+* The build is performed and the image is tested with an automated continuous
+  integration service.
+* The functionality related to the "insecure key" was removed.
+* Two additional variants of the image are produced:
+  - One without SSHD installed ('-no-ssh' suffix)
+  - One with neither SSHD nor cron installed ('-minimal' suffix)
+* Two branches are maintained:
+  - [One for Ubuntu "Bionic" (18.04)](https://hub.docker.com/r/robinbb/phusion-base-bionic)
+  - [One for Ubuntu "Xenial" (16.04)](https://hub.docker.com/r/robinbb/phusion-base-xenial)
 
 ### What are the problems with the stock Ubuntu base image?
 
@@ -518,11 +527,11 @@ Clone this repository:
 
 Build the image:
 
-    make build
+    ./build <image-name> [<image-version>]
 
-If you want to call the resulting image something else, pass the NAME variable, like this:
+For example:
 
-    make build NAME=joe/baseimage
+    ./build joe/baseimage
 
 <a name="removing_optional_services"></a>
 ### Removing optional services
@@ -543,7 +552,7 @@ You can also set them directly as shown in the following example, to prevent `ss
     export DISABLE_SSH=1
     export DISABLE_CRON=0
 
-Then you can proceed with `make build` command.
+Then you can proceed with `./build <image-name>`.
 
 <a name="conclusion"></a>
 ## Conclusion
