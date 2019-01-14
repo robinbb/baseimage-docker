@@ -1,0 +1,17 @@
+#! /bin/sh
+
+set -eu
+
+export NAME="$1"
+export VERSION="${2:-latest}"
+
+. image/buildconfig
+
+docker build -t "$NAME":"$VERSION" \
+  --rm image \
+  --build-arg DISABLE_SYSLOG=${DISABLE_SYSLOG} \
+  --build-arg DISABLE_SSH=${DISABLE_SSH} \
+  --build-arg DISABLE_CRON=${DISABLE_CRON}
+
+
+./test/runner.sh

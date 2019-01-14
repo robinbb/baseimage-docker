@@ -1,0 +1,15 @@
+#! /bin/sh
+
+set -eu
+
+export NAME="$1"
+export VERSION="${2:-latest}"
+
+. image/buildconfig
+
+./build "$@"
+
+printf "%s" "${DOCKER_PASSWORD}" \
+  | docker login -u "${DOCKER_USERNAME}" --password-stdin
+docker push ${NAME}:${VERSION}
+echo "*** Don't forget to create a tag by creating an official GitHub release."
