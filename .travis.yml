@@ -15,8 +15,6 @@ after_success:
     DISABLE_SSH=1 ./release $NAME $NUMVER-no-ssh
     ./release $NAME $NUMVER
     ./release $NAME latest
-    git tag -f bionic-$NUMVER
-    git push --tags -f
   fi
 env:
   global:
